@@ -5,8 +5,10 @@ import {
   StyleSheet,
   StatusBar,
   TextInput,
-  Dimensions
+  Dimensions,
+  ScrollView
 } from "react-native";
+import TodoCard from "./TodoCard";
 
 const { height, width } = Dimensions.get("window");
 
@@ -27,13 +29,18 @@ export class Todo extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <Text style={styles.title}> React Native TODO APP </Text>
-        <View style={styles.todobox}>
+        <View style={styles.todoBox}>
           <TextInput
             style={styles.input}
             placeholder={"Enter todo"}
             value={newTask}
             onChangeText={this.addNewTask}
           />
+        </View>
+        <View style={styles.todoCard}>
+          <ScrollView>
+            <TodoCard />
+          </ScrollView>
         </View>
       </View>
     );
@@ -51,12 +58,13 @@ const styles = StyleSheet.create({
   title: {
     color: "#607D8B",
     fontSize: 26,
-    fontWeight: "500",
+    fontWeight: "600",
     marginTop: 60,
     marginBottom: 60
   },
-  todobox: {
+  todoBox: {
     width: width - 40,
+    marginBottom: 10,
     borderWidth: 2,
     borderColor: "#607D8B",
     borderRadius: 5
@@ -65,5 +73,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     padding: 8,
     alignItems: "center"
+  },
+  todoCard: {
+    width: width - 40,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "#607D8B",
+    borderRadius: 5
   }
 });

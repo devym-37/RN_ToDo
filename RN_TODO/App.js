@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import Todo from "./components/Todo";
+import Todo from "./components/Todo/Todo";
 
 export default function App() {
   return <Todo />;
