@@ -6,41 +6,58 @@ import {
   StatusBar,
   TextInput,
   Dimensions,
-  ScrollView
+  Alert
 } from "react-native";
 import TodoCard from "./TodoCard";
+import Header from "../Header";
+import AddToDo from "./addToDo";
+// import { todoApi } from "../../API";
 
 const { height, width } = Dimensions.get("window");
+
+const id = 0;
 
 export class Todo extends Component {
   state = {
     newTask: ""
   };
 
-  addNewTask = task => {
+  inputTask = task => {
     this.setState({
       newTask: task
     });
   };
 
+  addTodo = () => {
+    const { newTask } = this.state;
+    if (newTask.length === 0) return Alert.alert("알림", "내용을 입력해주세요");
+    const Task = {
+      id: id++,
+      content: newTask,
+      complete: false,
+      createAt: Date.now()
+    };
+    const newAddToDo = [...taskList, Task];
+    this.setState({
+      taskList: newAddToDo,
+      newTask: ""
+    });
+  };
+
+  // componentDidMount = async () => {};
+
   render() {
     const { newTask } = this.state;
+    const { navigation } = this.props;
+    const { inputTask, addTodo } = this;
+    console.log("props1", this.props);
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <Text style={styles.title}> React Native TODO APP </Text>
-        <View style={styles.todoBox}>
-          <TextInput
-            style={styles.input}
-            placeholder={"Enter todo"}
-            value={newTask}
-            onChangeText={this.addNewTask}
-          />
-        </View>
+        <Header />
+        <AddToDo newTask={newTask} inputTask={inputTask} addTodo={addTodo} />
         <View style={styles.todoCard}>
-          <ScrollView>
-            <TodoCard />
-          </ScrollView>
+          <TodoCard text={"test text"} navigation={navigation} />
         </View>
       </View>
     );
@@ -54,13 +71,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center"
-  },
-  title: {
-    color: "#607D8B",
-    fontSize: 26,
-    fontWeight: "600",
-    marginTop: 60,
-    marginBottom: 60
   },
   todoBox: {
     width: width - 40,

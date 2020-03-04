@@ -6,35 +6,58 @@ import {
   StyleSheet,
   Dimensions
 } from "react-native";
+import { MaterialCommunityIcons, FontAwesome } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
 class TodoCard extends Component {
   state = {
-    Completed: false
+    taskCompleted: false,
+    taskDelet: false
   };
 
   toggleCompletedTask = () => {
     this.setState(prevState => {
       return {
-        Completed: !prevState.Completed
+        taskCompleted: !prevState.taskCompleted
       };
     });
   };
 
   render() {
-    const { Completed } = this.state;
+    const { taskCompleted } = this.state;
+    const { text, navigation } = this.props;
+    console.log("props", this.props);
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this.toggleCompletedTask}>
-          <View
-            style={[
-              styles.circle,
-              Completed ? styles.completedCircle : styles.uncompletedCircle
-            ]}
+          {taskCompleted ? (
+            <MaterialCommunityIcons
+              name="check-circle-outline"
+              size={24}
+              color="green"
+              style={styles.icon}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="checkbox-blank-circle-outline"
+              size={24}
+              color="#607D8B"
+              style={styles.icon}
+            />
+          )}
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("ToDoDetail")}>
+          <Text style={styles.text}>{text}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <FontAwesome
+            name="trash-o"
+            size={26}
+            color="#E91E63"
+            style={styles.deleted}
           />
         </TouchableOpacity>
-        <Text style={styles.text}>Test Todo Card</Text>
       </View>
     );
   }
@@ -46,25 +69,20 @@ const styles = StyleSheet.create({
   container: {
     width: width - 40,
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "space-between"
   },
-  circle: {
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    borderWidth: 3,
+  icon: {
     marginLeft: 10
   },
-  completedCircle: {
-    borderColor: "red"
-  },
-  uncompletedCircle: {
-    borderColor: "#607D8B"
-  },
-
   text: {
-    fontSize: 20,
+    width: width - 120,
+    fontSize: 24,
     padding: 10,
-    fontWeight: "400"
+    fontWeight: "400",
+    backgroundColor: "red"
+  },
+  deleted: {
+    marginRight: 15
   }
 });
